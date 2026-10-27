@@ -151,6 +151,7 @@ def _cli(args, tmp_path, **env):
     return subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "spike.py"), *args],
         cwd=tmp_path, env=full_env, capture_output=True, text=True, timeout=60,
+        stdin=subprocess.DEVNULL,
     )
 
 
