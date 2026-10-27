@@ -26,8 +26,14 @@ def main():
     if args.mock:
         state.initialize_client(force_mock=True)
 
-    print(f"\n✨ Echoes Server starting on http://{args.host}:{args.port}")
-    print(f"📖 API Docs available at http://{args.host}:{args.port}/docs\n")
+    if sys.stdout.encoding and sys.stdout.encoding.lower().startswith("cp"):
+        try:
+            sys.stdout.reconfigure(encoding="utf-8")
+        except Exception:
+            pass
+
+    print(f"\n[Echoes] Server starting on http://{args.host}:{args.port}")
+    print(f"[Echoes] API Documentation available at http://{args.host}:{args.port}/docs\n")
     uvicorn.run("echoes.api:app", host=args.host, port=args.port, reload=False)
 
 
