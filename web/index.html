@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Echoes — Cultural Reminiscence Companion, Powered by Qloo</title>
+  <meta name="description" content="Echoes uses Qloo's Cultural AI Taste Graph to deliver personalised, hallucination-free reminiscence therapy sessions for caregivers of individuals with memory loss and dementia." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ════════════════ HEADER ════════════════ -->
+  <header class="app-header">
+    <a href="#" class="brand" onclick="navigateTo('dashboard');return false;">
+      <div class="brand-icon">♪</div>
+      <div>
+        <div class="brand-name">Echoes</div>
+        <div class="brand-tagline">Cultural Reminiscence Companion</div>
+      </div>
+    </a>
+
+    <div class="header-center">
+      <div class="mode-badge mock" id="mode-badge" title="Click to toggle mode">
+        <span class="dot"></span>Initializing...
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn-icon" title="Qloo Hackathon 2026" onclick="window.open('https://qloo.devpost.com/','_blank')">⬡</button>
+      <button class="btn-icon" title="View on GitHub" onclick="window.open('https://github.com/VANSHxGIT/Qloo-Hackthon-2k26---Echoes','_blank')">◈</button>
+    </div>
+  </header>
+
+  <!-- ════════════════ SIDEBAR ════════════════ -->
+  <nav class="sidebar">
+    <div class="nav-section-label">Overview</div>
+
+    <a class="nav-item active" data-view="dashboard" href="#">
+      <span class="nav-icon">⊞</span>
+      Dashboard
+    </a>
+
+    <a class="nav-item" data-view="patients" href="#">
+      <span class="nav-icon">◌</span>
+      Care Recipients
+      <span class="nav-badge" id="nav-patients-count">0</span>
+    </a>
+
+    <div class="nav-section-label">Session Studio</div>
+
+    <a class="nav-item" data-view="intake" href="#">
+      <span class="nav-icon">⊕</span>
+      Intake & Era Setup
+    </a>
+
+    <a class="nav-item" data-view="session" href="#">
+      <span class="nav-icon">♦</span>
+      Reminiscence Room
+    </a>
+
+    <a class="nav-item" data-view="comparison" href="#">
+      <span class="nav-icon">⊟</span>
+      Reality Check Arena
+    </a>
+
+    <div class="nav-section-label">Reports</div>
+
+    <a class="nav-item" data-view="caresheet" href="#">
+      <span class="nav-icon">⊡</span>
+      Caregiver Care Sheet
+    </a>
+
+    <div class="sidebar-footer">
+      <div class="qloo-credit">
+        <span class="qloo-credit-icon">⬡</span>
+        <div class="qloo-credit-text">Grounded by Qloo<br>Cultural AI Taste Graph</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════════════════ MAIN CONTENT ════════════════ -->
+  <main class="main-content" id="main-content">
+
+    <!-- ════ DASHBOARD VIEW ════ -->
+    <div class="view active" id="view-dashboard">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Cultural Memory Engine</h1>
+          <p class="page-subtitle">Hallucination-free reminiscence sessions grounded in Qloo's global taste graph — built for the world's 55 million dementia caregivers.</p>
+        </div>
+        <button class="btn btn-primary" onclick="navigateTo('intake')">⊕ New Session</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stat-grid">
+        <div class="stat-card amber">
+          <div class="stat-icon">◌</div>
+          <div class="stat-value" id="stat-patients">—</div>
+          <div class="stat-label">Care Recipients</div>
+        </div>
+        <div class="stat-card emerald">
+          <div class="stat-icon">♦</div>
+          <div class="stat-value" id="stat-sessions">—</div>
+          <div class="stat-label">Sessions Generated</div>
+        </div>
+        <div class="stat-card lilac">
+          <div class="stat-icon">⬡</div>
+          <div class="stat-value">5</div>
+          <div class="stat-label">Cultural Domains</div>
+        </div>
+        <div class="stat-card rose">
+          <div class="stat-icon">◎</div>
+          <div class="stat-value">5</div>
+          <div class="stat-label">Demo Personas</div>
+        </div>
+      </div>
+
+      <!-- Presets Quick Launch -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">◈</span>Quick-Start Demo Personas</div>
+          <span style="font-size:12px;color:var(--text-muted);">Click any card to load a pre-configured session</span>
+        </div>
+        <div class="preset-grid" id="dashboard-presets">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Why Qloo section -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">⬡</span>Why Qloo Powers the Moat</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+          <div style="padding:16px;background:var(--navy-mid);border:1px solid var(--border);border-radius:var(--radius-md);">
+            <div style="font-size:22px;margin-bottom:8px;">⊟</div>
+            <div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">Zero Hallucination</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.6;">Every entity in a session carries a Qloo ID. The LLM may narrate, but it cannot invent — only verified cultural entities reach the patient.</div>
+          </div>
+          <div style="padding:16px;background:var(--navy-mid);border:1px solid var(--border);border-radius:var(--radius-md);">
+            <div style="font-size:22px;margin-bottom:8px;">◎</div>
+            <div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">True Regional Grounding</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.6;">Delhi, Lagos, São Paulo, Tokyo, Mexico City — Qloo's taste graph returns authentic taste neighbours for each specific culture and era.</div>
+          </div>
+          <div style="padding:16px;background:var(--navy-mid);border:1px solid var(--border);border-radius:var(--radius-md);">
+            <div style="font-size:22px;margin-bottom:8px;">◉</div>
+            <div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">Adaptive Safety Loop</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.6;">Items that cause distress are instantly added to <code style="font-size:11px;background:var(--navy-light);padding:1px 5px;border-radius:4px;">filter.exclude.entities</code> and never resurface in future sessions.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ INTAKE VIEW ════ -->
+    <div class="view" id="view-intake">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Intake & Reminiscence Era Setup</h1>
+          <p class="page-subtitle">Enter the recipient's background. Echoes calculates their golden memory window and composes a culturally grounded session through Qloo.</p>
+        </div>
+        <button class="btn btn-secondary" id="btn-load-preset">◈ Load Persona</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;">
+
+        <!-- Left: Form -->
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><span class="icon">◌</span>Recipient Profile</div>
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input id="intake-name" class="form-input" type="text" placeholder="e.g. Dadi Savitri" />
+                <input id="intake-patient-id" type="hidden" value="" />
+                <input id="intake-preset-id" type="hidden" value="" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Birth Year</label>
+                <input id="intake-birth-year" class="form-input" type="number" min="1900" max="2010" placeholder="e.g. 1942" value="1942" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Hometown / Home City</label>
+                <input id="intake-hometown" class="form-input" type="text" placeholder="e.g. Delhi, Lagos, São Paulo" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Cultural Background</label>
+                <input id="intake-culture" class="form-input" type="text" placeholder="e.g. Hindi / North India, Yoruba" />
+              </div>
+              <div class="form-group full">
+                <label class="form-label">Additional Notes</label>
+                <textarea id="intake-notes" class="form-textarea" placeholder="Key relationships, childhood memories, significant places..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><span class="icon">♪</span>Cultural Seeds</div>
+              <span style="font-size:12px;color:var(--text-muted);">Search & add up to 5</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;">
+                <div class="search-wrap">
+                  <input id="seed-search" class="form-input" type="text" placeholder="Search: artist, movie, TV show, brand, place..." autocomplete="off" />
+                  <div id="seed-dropdown" class="search-dropdown"></div>
+                </div>
+                <select id="seed-type" class="form-select" style="width:130px;">
+                  <option value="">Any Type</option>
+                  <option value="urn:entity:artist">Artist</option>
+                  <option value="urn:entity:movie">Movie</option>
+                  <option value="urn:entity:tv_show">TV Show</option>
+                  <option value="urn:entity:brand">Brand</option>
+                  <option value="urn:entity:place">Place</option>
+                </select>
+              </div>
+              <div class="seed-tags" id="seed-tags-container">
+                <span style="color:var(--text-muted);font-size:13px;">Search and add cultural seeds above...</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Era Panel + Generate -->
+        <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:24px;">
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><span class="icon">◉</span>Reminiscence Bump</div>
+            </div>
+            <div class="era-slider-container" style="border:none;padding:0;">
+              <div class="era-display">
+                <div>
+                  <div class="era-range-label" id="era-display">1954 – 1970</div>
+                  <div class="era-range-desc" id="era-desc">Golden memory window</div>
+                </div>
+              </div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin-top:8px;">The <strong style="color:var(--amber-light);">Reminiscence Bump</strong> is the period ages 12–28 when autobiographical memories are formed most vividly. Echoes targets this era exclusively.</div>
+            </div>
+          </div>
+
+          <div class="card" style="background:var(--emerald-dim);border-color:rgba(16,185,129,0.2);">
+            <div style="font-size:13px;font-weight:700;color:var(--emerald-light);margin-bottom:8px;">⬡ Qloo Domains to Query</div>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <div style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span>♪</span> Musical Artists & Icons</div>
+              <div style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span>◉</span> Classic Cinema & Films</div>
+              <div style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span>▷</span> Broadcast TV & Serials</div>
+              <div style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span>◈</span> Heritage Brands & Snacks</div>
+              <div style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span>◎</span> Hometown Landmarks</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="btn-generate-session" style="width:100%;justify-content:center;padding:14px;">
+            ♦ Compose Session
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ SESSION ROOM VIEW ════ -->
+    <div class="view" id="view-session">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Reminiscence Session Room</h1>
+          <p class="page-subtitle">Follow each chapter at a calm pace. Tap a reaction after each anchor to adapt future sessions.</p>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="navigateTo('comparison')">⊟ View Comparison</button>
+          <button class="btn btn-secondary btn-sm" onclick="navigateTo('intake')">⊕ New Session</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start;">
+
+        <!-- Session Room -->
+        <div class="session-room">
+          <div class="session-header">
+            <div>
+              <div class="session-title" id="session-title">—</div>
+              <div class="session-meta" id="session-meta">—</div>
+            </div>
+          </div>
+
+          <div class="session-progress-wrap">
+            <div class="session-steps" id="session-steps"></div>
+            <div class="session-timer" id="session-timer">~20 min</div>
+          </div>
+
+          <div class="session-chapters" id="session-chapters">
+            <div class="empty-state">
+              <div class="empty-state-icon">♦</div>
+              <div class="empty-state-title">No session loaded</div>
+              <div class="empty-state-desc">Go to the Intake Studio to compose a personalised reminiscence session.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar: Grounding Score -->
+        <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:24px;">
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><span class="icon">⬡</span>Qloo Grounding</div>
+            </div>
+            <div class="score-ring-container">
+              <svg class="score-ring" viewBox="0 0 56 56">
+                <circle class="bg-ring" cx="28" cy="28" r="26"/>
+                <circle class="fg-ring" cx="28" cy="28" r="26" transform="rotate(-90 28 28)"/>
+              </svg>
+              <div class="score-info">
+                <div class="score-percent" id="grounding-percent">—</div>
+                <div class="score-label" id="grounding-count">Cultural Grounding Score</div>
+              </div>
+            </div>
+            <div style="margin-top:14px;font-size:12px;color:var(--text-secondary);line-height:1.6;">
+              Entities with a Qloo ID cannot be hallucinated — they are real cultural anchors from the taste graph.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><span class="icon">◌</span>Caregiver Tips</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.6;padding:10px;background:var(--navy-mid);border-radius:8px;border:1px solid var(--border);">
+                <strong style="color:var(--text-primary);">Never quiz.</strong><br>Instead of "Do you remember this?" say "Listen to this melody with me."
+              </div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.6;padding:10px;background:var(--navy-mid);border-radius:8px;border:1px solid var(--border);">
+                <strong style="color:var(--text-primary);">Watch body language.</strong><br>Smiling, humming, or reaching out are strong lit-up signals.
+              </div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.6;padding:10px;background:var(--amber-dim);border-radius:8px;border:1px solid rgba(245,158,11,0.2);">
+                <strong style="color:var(--amber-light);">Mark upsets immediately.</strong><br>Tapping 💔 Upset blacklists the entity for all future sessions.
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-emerald" style="width:100%;justify-content:center;" onclick="loadCareSheet(state.currentSession?.session?.patient_id || '')">
+            ⊡ Export Care Sheet
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ COMPARISON VIEW ════ -->
+    <div class="view" id="view-comparison">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Reality Check Arena</h1>
+          <p class="page-subtitle">Side-by-side: generic LLM hallucination versus Qloo-grounded cultural precision. This is the core demo.</p>
+        </div>
+        <button class="btn btn-primary" onclick="navigateTo('session')">♦ Back to Session</button>
+      </div>
+
+      <div class="comparison-arena">
+
+        <!-- LLM Panel -->
+        <div class="comparison-panel llm-panel">
+          <div class="comparison-label">
+            <div class="comparison-badge badge-danger">✗ Generic LLM</div>
+            <span class="comparison-title">No Taste Graph</span>
+          </div>
+
+          <div style="padding:12px 16px;background:var(--danger-glow);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius-sm);">
+            <div style="font-size:11px;font-weight:700;color:var(--danger);margin-bottom:6px;">HALLUCINATION RISK</div>
+            <div style="font-size:13px;color:#fca5a5;font-weight:600;" id="llm-risk">—</div>
+          </div>
+
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Simulated Output</div>
+            <div class="comparison-items" id="llm-items"></div>
+          </div>
+
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Critical Flaws</div>
+            <div class="flaw-list" id="llm-flaws"></div>
+          </div>
+
+          <div class="grounding-score zero">
+            <span>0%</span>
+            <span style="font-size:12px;font-weight:500;" id="llm-verdict">No cultural grounding — high agitation risk</span>
+          </div>
+        </div>
+
+        <!-- Qloo Panel -->
+        <div class="comparison-panel qloo-panel">
+          <div class="comparison-label">
+            <div class="comparison-badge badge-success">✓ Qloo Cultural Engine</div>
+            <span class="comparison-title">Taste Graph Grounded</span>
+          </div>
+
+          <div class="score-ring-container" style="padding:12px 14px;">
+            <svg class="score-ring" viewBox="0 0 56 56" style="width:48px;height:48px;">
+              <circle class="bg-ring" cx="28" cy="28" r="26"/>
+              <circle class="fg-ring" cx="28" cy="28" r="26" transform="rotate(-90 28 28)"/>
+            </svg>
+            <div class="score-info">
+              <div class="score-percent" style="font-size:18px;" id="grounding-percent-cmp">—</div>
+              <div class="score-label">Qloo Grounding Score</div>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Qloo-Verified Cultural Anchors</div>
+            <div class="comparison-items" id="qloo-items"></div>
+          </div>
+
+          <div class="grounding-score perfect">
+            <span>✓</span>
+            <span style="font-size:12px;font-weight:500;" id="qloo-verdict">Culturally grounded, safety-filtered</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- No session state -->
+      <div id="comparison-empty" class="empty-state" style="display:none;">
+        <div class="empty-state-icon">⊟</div>
+        <div class="empty-state-title">No session to compare</div>
+        <div class="empty-state-desc">Generate a session in the Intake Studio first, then come back here to see the side-by-side comparison.</div>
+        <button class="btn btn-primary" style="margin-top:12px;" onclick="navigateTo('intake')">Go to Intake Studio</button>
+      </div>
+    </div>
+
+    <!-- ════ PATIENTS VIEW ════ -->
+    <div class="view" id="view-patients">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Care Recipients</h1>
+          <p class="page-subtitle">Saved patient profiles with adaptive taste histories, safety exclusions, and session archives.</p>
+        </div>
+        <button class="btn btn-primary" onclick="navigateTo('intake')">⊕ Add New Recipient</button>
+      </div>
+
+      <div class="card">
+        <div class="patient-list" id="patient-list">
+          <div class="empty-state">
+            <div class="empty-state-icon">◌</div>
+            <div class="empty-state-title">Loading patients...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ CARE SHEET VIEW ════ -->
+    <div class="view" id="view-caresheet">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Caregiver Care Sheet</h1>
+          <p class="page-subtitle">Printable clinical summary of cultural anchors, safety exclusions, and session notes for medical staff and visiting family.</p>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="window.print()">⊡ Print</button>
+          <button class="btn btn-secondary btn-sm" onclick="navigateTo('patients')">◌ All Patients</button>
+        </div>
+      </div>
+
+      <div class="care-sheet-content">
+        <div class="care-sheet-toolbar">
+          <span style="font-size:13px;font-weight:700;color:var(--text-secondary);">Echoes Clinical Report</span>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--emerald-light);background:var(--emerald-dim);padding:4px 12px;border-radius:100px;border:1px solid rgba(16,185,129,0.2);">⬡ Powered by Qloo</div>
+        </div>
+        <div class="care-sheet-body" id="care-sheet-body">
+          <div class="empty-state">
+            <div class="empty-state-icon">⊡</div>
+            <div class="empty-state-title">No care sheet loaded</div>
+            <div class="empty-state-desc">Select a patient from the Care Recipients view or click "Export Care Sheet" after a session.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main><!-- /main-content -->
+
+</div><!-- /app-shell -->
+
+<!-- ════ MODAL ════ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Modal</div>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ════ TOAST CONTAINER ════ -->
+<div id="toast-container"></div>
+
+<script src="app.js"></script>
+
+<!-- Sync comparison grounding score with session -->
+<script>
+  // Keep comparison grounding score in sync with session view
+  const origRenderSession = renderSession;
+  document.addEventListener('DOMContentLoaded', () => {
+    const origRS = window.renderSession;
+    if (origRS) {
+      window.renderSession = function(result) {
+        origRS(result);
+        const pct = document.getElementById('grounding-percent');
+        const pct2 = document.getElementById('grounding-percent-cmp');
+        if (pct && pct2) pct2.textContent = pct.textContent;
+        // Animate comparison ring too
+        const fgs = document.querySelectorAll('.fg-ring');
+        const score = parseInt(result.session?.stats?.grounding_score || '0');
+        fgs.forEach(fg => {
+          setTimeout(() => { fg.style.strokeDashoffset = 163 * (1 - score / 100); }, 300);
+        });
+      };
+    }
+  });
+</script>
+
+</body>
+</html>
