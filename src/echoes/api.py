@@ -126,7 +126,7 @@ class FeedbackRequest(BaseModel):
     entity_id: str
     entity_name: str
     entity_type: str
-    reaction: str = Field(..., regex="^(lit_up|neutral|upset)$")
+    reaction: str = Field(..., pattern="^(lit_up|neutral|upset)$")
     notes: str = ""
     session_id: str = ""
 
@@ -222,7 +222,7 @@ def create_patient(req: PatientCreate) -> dict[str, Any]:
         notes=req.notes,
     )
     if req.seeds:
-        state.db.set_seeds(patient["id"], [s.dict() for s in req.seeds])
+        state.db.set_seeds(patient["id"], [s.model_dump() for s in req.seeds])
 
     seeds = state.db.get_seeds(patient["id"])
     patient["seeds"] = seeds
@@ -267,7 +267,7 @@ def generate_session(req: SessionGenerateRequest) -> dict[str, Any]:
             birth_year=req.birth_year,
             hometown=req.hometown,
             culture=req.culture,
-            seed_inputs=[s.dict() for s in req.seeds] if req.seeds else None,
+            seed_inputs=[s.model_dump() for s in req.seeds] if req.seeds else None,
             preset_id=req.preset_id,
         )
         return result
