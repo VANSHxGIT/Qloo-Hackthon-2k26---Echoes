@@ -84,8 +84,14 @@ def test_agent_session_composition(temp_db, mock):
     assert "stats" in session
 
 
-def test_api_endpoints_end_to_end():
-    with TestClient(app) as client:
+def test_api_endpoints_end_to_end(temp_db):
+    old_db = state.db
+    old_agent = state.agent
+    state.db = temp_db
+    if state.client:
+        state.agent = ReminiscenceAgent(state.client, temp_db)
+    try:
+        with TestClient(app) as client:
         # 1. Status
         res = client.get("/api/status")
         assert res.status_code == 200
@@ -153,3 +159,6 @@ def test_api_endpoints_end_to_end():
         sheet = res.json()
         assert "markdown" in sheet
         assert "Agitating Song" in sheet["markdown"]
+    finally:
+        state.db = old_db
+        state.agent = old_agent
