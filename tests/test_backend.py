@@ -87,78 +87,79 @@ def test_agent_session_composition(temp_db, mock):
 def test_api_endpoints_end_to_end(temp_db):
     old_db = state.db
     old_agent = state.agent
+    state.initialize_client(force_mock=True)
     state.db = temp_db
     if state.client:
         state.agent = ReminiscenceAgent(state.client, temp_db)
     try:
         with TestClient(app) as client:
-        # 1. Status
+            # 1. Status
             res = client.get("/api/status")
             assert res.status_code == 200
             data = res.json()
             assert data["status"] == "online"
 
-        # 2. Presets
-        res = client.get("/api/presets")
-        assert res.status_code == 200
-        presets = res.json()
-        assert len(presets) >= 5
-        delhi_preset = next(p for p in presets if p["id"] == "delhi_1942")
-        assert delhi_preset["name"] == "Dadi Savitri"
+            # 2. Presets
+            res = client.get("/api/presets")
+            assert res.status_code == 200
+            presets = res.json()
+            assert len(presets) >= 5
+            delhi_preset = next(p for p in presets if p["id"] == "delhi_1942")
+            assert delhi_preset["name"] == "Dadi Savitri"
 
-        # 3. Create Patient
-        res = client.post(
-            "/api/patients",
-            json={
-                "name": "Maria",
-                "birth_year": 1948,
-                "hometown": "São Paulo",
-                "culture": "Brazilian",
-                "seeds": [{"name": "Elis Regina", "type": ARTIST}],
-            },
-        )
-        assert res.status_code == 200
-        pat = res.json()
-        pid = pat["id"]
+            # 3. Create Patient
+            res = client.post(
+                "/api/patients",
+                json={
+                    "name": "Maria",
+                    "birth_year": 1948,
+                    "hometown": "São Paulo",
+                    "culture": "Brazilian",
+                    "seeds": [{"name": "Elis Regina", "type": ARTIST}],
+                },
+            )
+            assert res.status_code == 200
+            pat = res.json()
+            pid = pat["id"]
 
-        # 4. Generate Session
-        res = client.post(
-            "/api/sessions/generate",
-            json={
-                "patient_id": pid,
-                "name": "Maria",
-                "birth_year": 1948,
-                "hometown": "São Paulo",
-                "preset_id": "saopaulo_1947",
-            },
-        )
-        assert res.status_code == 200
-        sess_resp = res.json()
-        assert "session" in sess_resp
-        assert "chapters" in sess_resp["session"]
-        assert len(sess_resp["session"]["chapters"]) >= 3
+            # 4. Generate Session
+            res = client.post(
+                "/api/sessions/generate",
+                json={
+                    "patient_id": pid,
+                    "name": "Maria",
+                    "birth_year": 1948,
+                    "hometown": "São Paulo",
+                    "preset_id": "saopaulo_1947",
+                },
+            )
+            assert res.status_code == 200
+            sess_resp = res.json()
+            assert "session" in sess_resp
+            assert "chapters" in sess_resp["session"]
+            assert len(sess_resp["session"]["chapters"]) >= 3
 
-        # 5. Adapt / Feedback (Record 'upset' reaction)
-        res = client.post(
-            "/api/sessions/adapt",
-            json={
-                "patient_id": pid,
-                "entity_id": "MOCK-artist-001",
-                "entity_name": "Agitating Song",
-                "entity_type": ARTIST,
-                "reaction": "upset",
-            },
-        )
-        assert res.status_code == 200
-        adapt_resp = res.json()
-        assert "MOCK-artist-001" in adapt_resp["updated_signals"]["exclude_entities"]
+            # 5. Adapt / Feedback (Record 'upset' reaction)
+            res = client.post(
+                "/api/sessions/adapt",
+                json={
+                    "patient_id": pid,
+                    "entity_id": "MOCK-artist-001",
+                    "entity_name": "Agitating Song",
+                    "entity_type": ARTIST,
+                    "reaction": "upset",
+                },
+            )
+            assert res.status_code == 200
+            adapt_resp = res.json()
+            assert "MOCK-artist-001" in adapt_resp["updated_signals"]["exclude_entities"]
 
-        # 6. Caregiver Care Sheet Export
-        res = client.get(f"/api/patients/{pid}/care-sheet")
-        assert res.status_code == 200
-        sheet = res.json()
-        assert "markdown" in sheet
-        assert "Agitating Song" in sheet["markdown"]
+            # 6. Caregiver Care Sheet Export
+            res = client.get(f"/api/patients/{pid}/care-sheet")
+            assert res.status_code == 200
+            sheet = res.json()
+            assert "markdown" in sheet
+            assert "Agitating Song" in sheet["markdown"]
     finally:
         state.db = old_db
         state.agent = old_agent

@@ -7,18 +7,39 @@ feedback loops (lit_up positive signals and upset exclusion blacklists).
 from __future__ import annotations
 
 import json
+import os
+import shutil
 import sqlite3
 import threading
 import uuid
 from pathlib import Path
 from typing import Any
 
+ROOT = Path(__file__).resolve().parents[2]
 
-DEFAULT_DB_PATH = "data/echoes.db"
+
+def get_default_db_path() -> str:
+    """Returns database path, falling back to writable /tmp in serverless (e.g. Vercel)."""
+    if "ECHOES_DB_PATH" in os.environ:
+        return os.environ["ECHOES_DB_PATH"]
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+        tmp_db = Path("/tmp/echoes.db")
+        seed_db = ROOT / "data" / "echoes.db"
+        if seed_db.is_file() and not tmp_db.exists():
+            try:
+                shutil.copy(seed_db, tmp_db)
+            except Exception:
+                pass
+        return str(tmp_db)
+    return str(ROOT / "data" / "echoes.db")
 
 
-def _get_conn(db_path: str = DEFAULT_DB_PATH) -> sqlite3.Connection:
-    p = Path(db_path)
+DEFAULT_DB_PATH = get_default_db_path()
+
+
+def _get_conn(db_path: str | None = None) -> sqlite3.Connection:
+    target = db_path or get_default_db_path()
+    p = Path(target)
     p.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(str(p), check_same_thread=False)
     conn.row_factory = sqlite3.Row
@@ -26,8 +47,8 @@ def _get_conn(db_path: str = DEFAULT_DB_PATH) -> sqlite3.Connection:
 
 
 class EchoesDB:
-    def __init__(self, db_path: str = DEFAULT_DB_PATH):
-        self.db_path = db_path
+    def __init__(self, db_path: str | None = None):
+        self.db_path = db_path or get_default_db_path()
         self._lock = threading.Lock()
         self._init_schema()
 
@@ -35,9 +56,12 @@ class EchoesDB:
         with self._lock:
             conn = _get_conn(self.db_path)
             try:
+                try:
+                    conn.execute("PRAGMA journal_mode = WAL;")
+                except sqlite3.OperationalError:
+                    pass
                 conn.executescript(
                     """
-                    PRAGMA journal_mode = WAL;
 
                     CREATE TABLE IF NOT EXISTS patients (
                         id TEXT PRIMARY KEY,

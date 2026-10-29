@@ -1,8 +1,12 @@
 /* ================================================================
    Echoes app.js — Main application logic
    ================================================================ */
-
-const API = 'http://127.0.0.1:8000';
+const API = (
+  window.location.protocol === 'file:' ||
+  ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+   window.location.port &&
+   window.location.port !== '8000')
+) ? 'http://127.0.0.1:8000' : '';
 
 /* ── State ──────────────────────────────────────────────────────── */
 const state = {

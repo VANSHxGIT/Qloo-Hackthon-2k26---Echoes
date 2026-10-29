@@ -56,7 +56,10 @@ class AppState:
             self.is_mock_active = True
             logger.info(f"Initialized in [MOCK] offline mode using {self.mock_url}")
         else:
-            cache_path = str(ROOT / ".cache" / "qloo.sqlite")
+            if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+                cache_path = "/tmp/qloo.sqlite"
+            else:
+                cache_path = str(ROOT / ".cache" / "qloo.sqlite")
             self.client = QlooClient(api_key=api_key, cache_path=cache_path)
             self.is_mock_active = False
             logger.info("Initialized with Live Qloo API")
