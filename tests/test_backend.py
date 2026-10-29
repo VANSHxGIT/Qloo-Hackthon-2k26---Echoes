@@ -93,10 +93,10 @@ def test_api_endpoints_end_to_end(temp_db):
     try:
         with TestClient(app) as client:
         # 1. Status
-        res = client.get("/api/status")
-        assert res.status_code == 200
-        data = res.json()
-        assert data["status"] == "online"
+            res = client.get("/api/status")
+            assert res.status_code == 200
+            data = res.json()
+            assert data["status"] == "online"
 
         # 2. Presets
         res = client.get("/api/presets")
